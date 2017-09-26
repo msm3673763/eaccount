@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>注册用户</title>
+</head>
+<body>
+<div th:if='${data.code != 0}'>
+    <span th:text="${data.msg}" />
+</div>
+<div th:if='${data.code == 0}'>
+    <form id="form" th:action="@{/user/save}">
+        <div>身份证号：<input name="idcardNo" /></div>
+        <div>支付密码：<input id="payPwd" name="payPwd" type="password" /></div>
+        <div>确认支付密码：<input id="payPwdConfirm" name="payPwdConfirm" type="password" /></div>
+        <input type="hidden" name="securityCode" th:value="${data.data.securityCode}"/>
+        <button onclick="formSubmit();">提交</button>
+    </form>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/encryption.js}" />
+<script th:inline="javascript" type="text/javascript">
+    var rsa = [[${data.data.publicKey}]];
+</script>
+<script type="text/javascript">
+
+    function formSubmit() {
+        // 加密
+        var rsaKey = new RSAKey();
+        rsaKey.setPublic(b64tohex(rsa.modulus), b64tohex(rsa.exponent));
+        var password = document.getElementById("payPwd").value;
+        document.getElementById("payPwd").value = hex2b64(rsaKey.encrypt(password));
+        var confirmPwd = document.getElementById("payPwdConfirm").value;
+        document.getElementById("payPwdConfirm").value = hex2b64(rsaKey.encrypt(confirmPwd));
+    }
+</script>
+</html>

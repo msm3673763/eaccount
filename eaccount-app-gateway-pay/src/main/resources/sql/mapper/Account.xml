@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ucsmy.eaccount.pay.dao.AccountDao">
+
+    <sql id="query">
+        SELECT
+            a.total_expend as 'totalExpend',
+            a.id as 'id',
+            a.today_expend as 'todayExpend',
+            a.version as 'version',
+            a.sett_amount as 'settAmount',
+            a.security_money as 'securityMoney',
+            a.total_income as 'totalIncome',
+            a.account_type as 'accountType',
+            a.today_income as 'todayIncome',
+            a.edit_time as 'editTime',
+            a.remark as 'remark',
+            a.credit_line as 'creditLine',
+            a.status as 'status',
+            a.user_no as 'userNo',
+            a.account_no as 'accountNo',
+            a.unbalance as 'unbalance',
+            a.create_time as 'createTime',
+            a.balance as 'balance'
+        FROM ec_account a
+    </sql>
+
+    <insert id="save" parameterType="com.ucsmy.eaccount.pay.entity.Account">
+        insert into ec_account(
+            total_expend,
+            id,
+            today_expend,
+            version,
+            sett_amount,
+            security_money,
+            total_income,
+            account_type,
+            today_income,
+            edit_time,
+            remark,
+            credit_line,
+            status,
+            user_no,
+            account_no,
+            unbalance,
+            create_time,
+            balance
+        )
+        values(
+            #{totalExpend},
+            #{id},
+            #{todayExpend},
+            #{version},
+            #{settAmount},
+            #{securityMoney},
+            #{totalIncome},
+            #{accountType},
+            #{todayIncome},
+            #{editTime},
+            #{remark},
+            #{creditLine},
+            #{status},
+            #{userNo},
+            #{accountNo},
+            #{unbalance},
+            #{createTime},
+            #{balance}
+        )
+    </insert>
+</mapper>

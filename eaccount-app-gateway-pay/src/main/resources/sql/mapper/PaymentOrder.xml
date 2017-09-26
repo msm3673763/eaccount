@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ucsmy.eaccount.pay.dao.PaymentOrderDao">
+
+    <sql id="query">
+        SELECT
+            a.id as 'id',
+            a.version as 'version',
+            a.create_time as 'createTime',
+            a.editor as 'editor',
+            a.creater as 'creater',
+            a.edit_time as 'editTime',
+            a.status as 'status',
+            a.product_name as 'productName',
+            a.merchant_order_no as 'merchantOrderNo',
+            a.order_amount as 'orderAmount',
+            a.order_from as 'orderFrom',
+            a.merchant_name as 'merchantName',
+            a.merchant_no as 'merchantNo',
+            a.order_time as 'orderTime',
+            a.order_date as 'orderDate',
+            a.order_ip as 'orderIp',
+            a.return_url as 'returnUrl',
+            a.notify_url as 'notifyUrl',
+            a.cancel_reason as 'cancelReason',
+            a.pay_way_code as 'payWayCode',
+            a.pay_way_name as 'payWayName',
+            a.remark as 'remark',
+            a.trx_no as 'trxNo'
+        FROM ec_payment_order a
+    </sql>
+
+    <insert id="save" parameterType="com.ucsmy.eaccount.pay.entity.PaymentOrder">
+        insert into ec_payment_order(
+            id,
+            create_time,
+            status,
+            product_name,
+            merchant_order_no,
+            order_amount,
+            merchant_no,
+            order_time,
+            order_date,
+            return_url,
+            notify_url,
+            pay_way_code
+        )
+        values(
+            #{id},
+            #{createTime},
+            #{status},
+            #{productName},
+            #{merchantOrderNo},
+            #{orderAmount},
+            #{merchantNo},
+            #{orderTime},
+            #{orderDate},
+            #{returnUrl},
+            #{notifyUrl},
+            #{payWayCode}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.ucsmy.eaccount.pay.entity.PaymentOrder">
+        UPDATE ec_payment_order
+        SET status = #{status}, trx_no = #{trxNo}
+        WHERE id=#{id}
+    </update>
+
+    <select id="findById" resultType="com.ucsmy.eaccount.pay.entity.PaymentOrder">
+        <include refid="query"/>
+        WHERE a.id = #{id}
+    </select>
+</mapper>

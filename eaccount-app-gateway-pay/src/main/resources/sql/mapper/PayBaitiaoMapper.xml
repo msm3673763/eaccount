@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ucsmy.eaccount.pay.dao.PayBaitiaoMapper">
+
+    <select id="getCreditLine" resultType="java.lang.String">
+      select   C.credit_line as creditLine from ec_account C
+            where c.account_no = #{value}
+    </select>
+
+</mapper>

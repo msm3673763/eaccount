@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ucsmy.ucas.clearing.dao.EcCheckBatchDao">
+
+    <resultMap id="BaseResultMap" type="com.ucsmy.ucas.clearing.entity.EcCheckBatch">
+        <id column="id" property="id" jdbcType="VARCHAR"></id>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="editor" property="editor" jdbcType="VARCHAR"/>
+        <result column="creater" property="creater" jdbcType="VARCHAR"/>
+        <result column="edit_time" property="editTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="account_check_batch_no" property="accountCheckBatchNo" jdbcType="VARCHAR"/>
+        <result column="bill_date" property="billDate" jdbcType="VARCHAR"/>
+        <result column="bill_type" property="billType" jdbcType="VARCHAR"/>
+        <result column="handle_status" property="handleStatus" jdbcType="VARCHAR"/>
+        <result column="bank_type" property="bankType" jdbcType="VARCHAR"/>
+        <result column="mistake_count" property="mistakeCount" jdbcType="INTEGER"/>
+        <result column="unhandle_mistake_count" property="unhandleMistakeCount" jdbcType="INTEGER"/>
+        <result column="trade_count" property="tradeCount" jdbcType="INTEGER"/>
+        <result column="bank_trade_count" property="bankTradeCount" jdbcType="INTEGER"/>
+        <result column="trade_amount" property="tradeAmount" jdbcType="DECIMAL"/>
+        <result column="bank_trade_amount" property="bankTradeAmount" jdbcType="DECIMAL"/>
+        <result column="refund_amount" property="refundAmount" jdbcType="DECIMAL"/>
+        <result column="bank_refund_amount" property="bankRefundAmount" jdbcType="DECIMAL"/>
+        <result column="bank_fee" property="bankFee" jdbcType="DECIMAL"/>
+        <result column="org_check_file_path" property="orgCheckFilePath" jdbcType="VARCHAR"/>
+        <result column="release_check_file_path" property="releaseCheckFilePath" jdbcType="VARCHAR"/>
+        <result column="release_status" property="releaseStatus" jdbcType="VARCHAR"/>
+        <result column="check_fail_msg" property="checkFailMsg" jdbcType="VARCHAR"/>
+        <result column="bank_err_msg" property="bankErrMsg" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="BASIC_COLUMN">
+        id,version,create_time,editor,edit_time,status,remark,account_check_batch_no,bill_date,bill_type,handle_status,
+        bank_type,mistake_count,unhandle_mistake_count,trade_count,bank_trade_count,refund_amount,bank_refund_amount,bank_fee,
+        org_check_file_path,release_check_file_path,release_status,check_fail_msg,bank_err_msg
+    </sql>
+    <sql id="query">
+        SELECT <include refid="BASIC_COLUMN"/> FROM ec_check_batch a
+    </sql>
+
+    <insert id="save" parameterType="com.ucsmy.ucas.clearing.entity.EcCheckBatch">
+        insert into ec_check_batch(
+            id,version,create_time,editor,edit_time,status,remark,account_check_batch_no,bill_date,bill_type,handle_status,
+            bank_type,mistake_count,unhandle_mistake_count,trade_count,bank_trade_count,refund_amount,bank_refund_amount,bank_fee,
+            org_check_file_path,release_check_file_path,release_status,check_fail_msg,bank_err_msg
+        )
+        values(
+            #{id},#{version},#{createTime},#{editor},#{editTime},#{status},#{remark},#{accountCheckBatchNo},
+            #{billDate},#{billType},#{handleStatus},#{bankType},#{mistakeCount},#{unhandleMistakeCount},
+            #{tradeCount},#{bankTradeCount},#{refundAmount},#{bankRefundAmount},#{bankFee},#{orgCheckFilePath},
+            #{releaseCheckFilePath},#{releaseStatus},#{checkFailMsg},#{bankErrMsg}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.ucsmy.ucas.clearing.entity.EcCheckBatch">
+        update ec_check_batch
+        set
+            version = #{version},
+            create_time = #{createTime},
+            editor = #{editor},
+            status = #{status},
+            edit_time = #{editTime},
+            status = #{status},
+            remark = #{remark},
+            account_check_batch_no = #{accountCheckBatchNo},
+            bill_date = #{billDate},
+            handle_status = #{handleStatus},
+            mistake_count = #{mistakeCount},
+            unhandle_mistake_count = #{unhandleMistakeCount},
+            trade_count = #{tradeCount},
+            bank_trade_count = #{bankTradeCount},
+            refund_amount = #{refundAmount},
+            bank_refund_amount = #{bankRefundAmount},
+            bank_fee = #{bankFee},
+            org_check_file_path = #{orgCheckFilePath},
+            release_check_file_path = #{releaseCheckFilePath},
+            release_status = #{releaseStatus},
+            check_fail_msg = #{checkFailMsg},
+            bank_err_msg = #{bankErrMsg}
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        delete from ec_check_batch
+        where id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="string" resultType="com.ucsmy.ucas.clearing.entity.EcCheckBatch">
+        SELECT <include refid="BASIC_COLUMN"/> FROM ec_check_batch
+        where a.id = #{id}
+    </select>
+
+    <select id="find" parameterType="string" resultType="com.ucsmy.ucas.clearing.entity.EcCheckBatch">
+        <include refid="query"/>
+    </select>
+
+    <select id="listBy" parameterType="map" resultMap="BaseResultMap">
+        select <include refid="BASIC_COLUMN"/> FROM ec_check_batch
+        <where>
+            <if test="bankType != null and bankType != ''">
+              and bank_type = #{bankType}
+            </if>
+            <if test="billDate != null and billDate != ''">
+              and bill_date = #{billDate}
+            </if>
+            <if test="status != null and status != ''">
+              and status not in 
+                <foreach collection="status" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>

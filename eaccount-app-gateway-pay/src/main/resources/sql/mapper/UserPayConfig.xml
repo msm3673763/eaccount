@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ucsmy.eaccount.pay.dao.UserPayConfigDao">
+
+    <sql id="query">
+        SELECT
+            id,
+            pay_product_code AS appId,
+            product_name AS productName,
+            user_no AS userNo,
+            pay_key AS payKey,
+            pay_secret AS paySecret,
+            status
+        FROM ec_user_pay_config upc
+    </sql>
+
+    <select id="findByAppId" resultType="com.ucsmy.eaccount.pay.entity.UserPayConfig">
+        <include refid="query"/>
+        WHERE upc.pay_product_code = #{appId} AND upc.status = '0'
+        LIMIT 0, 1
+    </select>
+
+</mapper>

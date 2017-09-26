@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ucsmy.eaccount.pay.dao.UserAccountRelDao">
+
+    <insert id="save" parameterType="com.ucsmy.eaccount.pay.entity.UserAccountRel">
+        insert into ec_user_account_rel(
+            account_type,
+            account_no,
+            user_no,
+            id
+        )
+        values(
+            #{accountType},
+            #{accountNo},
+            #{userNo},
+            #{id}
+        )
+    </insert>
+
+</mapper>

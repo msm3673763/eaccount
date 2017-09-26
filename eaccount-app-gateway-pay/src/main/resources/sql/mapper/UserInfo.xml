@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ucsmy.eaccount.pay.dao.UserInfoDao">
+
+    <sql id="userInfo">
+        SELECT
+        a.user_type as 'userType',
+        a.salt as 'salt',
+        a.pay_pwd as 'payPwd',
+        a.status as 'status',
+        a.id as 'id',
+        a.login_name as 'loginName',
+        a.user_name as 'userName',
+        a.account_no as 'accountNo',
+        a.password as 'password',
+        a.user_no as 'userNo',
+        a.create_time as 'createTime'
+        FROM ec_user_info a
+    </sql>
+
+    <select id="findUserInfo" parameterType="string" resultType="com.ucsmy.eaccount.pay.entity.UserInfo">
+        <include refid="userInfo"/>
+        LEFT JOIN ec_user_info_annex b ON a.user_no = b.user_no
+        <where>
+            <if test="entity != null">
+                <if test="!(entity.userName == null || entity.userName == '')">
+                    or b.user_name = #{entity.userName}
+                </if>
+                <if test="!(entity.idcardNo == null || entity.idcardNo == '')">
+                    or b.idcard_no = #{entity.idcardNo}
+                </if>
+                <if test="!(entity.mobile == null || entity.mobile == '')">
+                    or b.mobile = #{entity.mobile}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.ucsmy.eaccount.pay.entity.UserInfo">
+        insert into ec_user_info(
+            user_type,
+            salt,
+            pay_pwd,
+            status,
+            id,
+            login_name,
+            user_name,
+            account_no,
+            password,
+            user_no,
+            create_time
+        )
+        values(
+            #{userType},
+            #{salt},
+            #{payPwd},
+            #{status},
+            #{id},
+            #{loginName},
+            #{userName},
+            #{accountNo},
+            #{password},
+            #{userNo},
+            #{createTime}
+        )
+    </insert>
+
+</mapper>

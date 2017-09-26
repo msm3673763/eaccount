@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ucsmy.eaccount.pay.dao.PayWayDao">
+
+    <sql id="query">
+        SELECT
+            id,
+            pay_way_code AS payWayCode,
+            pay_way_name AS payWayName,
+            pay_type_code AS payTypeCode,
+            pay_type_name AS payTypeName,
+            pay_product_code AS appId,
+            pay_rate AS payRate,
+            sorts,
+            status
+        FROM ec_pay_way pw
+    </sql>
+
+    <select id="findByAppId" resultType="com.ucsmy.eaccount.pay.entity.PayWay">
+        <include refid="query"/>
+        WHERE pw.pay_product_code = #{appId} AND pw.status = '0'
+        ORDER BY pw.sorts
+    </select>
+
+</mapper>
